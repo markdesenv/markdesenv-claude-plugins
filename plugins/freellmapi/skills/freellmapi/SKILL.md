@@ -14,7 +14,7 @@ Gateway self-hosted (MIT, github.com/tashfeenahmed/freellmapi) que junta os plan
 - Endpoints de inferência: `/v1/chat/completions` (OpenAI), `/v1/messages` (Anthropic), `/v1/models`.
 - Autenticação dos clientes: chave unificada `freellmapi-...`, exibida na página **Keys** do painel. Não é a chave de nenhum provedor.
 - Modelo `auto` deixa o roteador escolher; também existem cadeias nomeadas como `auto:coding`.
-- Instalação: comando `/freellmapi:install`. Verificação: `/freellmapi:status`.
+- Instalação: `/freellmapi:install` (Windows: modo Node em `~/freellmapi\app`, banco em `~/freellmapi\data`, logs em `~/freellmapi\logs`). Iniciar e parar: `/freellmapi:start` e `/freellmapi:stop`. Verificação: `/freellmapi:status`.
 
 ## Usar a partir de código
 

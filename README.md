@@ -21,14 +21,16 @@ No Claude Code:
 
 ### Comandos
 
-- `/freellmapi:install [versão]` instala ou atualiza o gateway via Docker em `~/freellmapi`.
+- `/freellmapi:install [versão] [--docker]` instala ou atualiza o gateway em `~/freellmapi`. No Windows, o padrão é rodar direto no Node (sem Docker e sem admin); no Linux/macOS, usa Docker.
+- `/freellmapi:start` e `/freellmapi:stop` iniciam e param o gateway (modo Node). Pare quando não estiver usando para liberar memória.
 - `/freellmapi:status` verifica se o gateway responde e, com `FREELLMAPI_API_KEY` definida, se a chave unificada é aceita.
 
 A skill `freellmapi` é ativada sozinha quando você pede para usar LLMs gratuitos, apontar um SDK para o gateway ou rodar o Claude Code através dele.
 
 ### Requisitos
 
-- Docker Desktop (Windows/macOS) ou Docker Engine com `docker compose` (Linux).
+- Windows (modo Node): Node >= 20.18 e < 25, e git.
+- Modo Docker: Docker Desktop (Windows/macOS) ou Docker Engine com `docker compose` (Linux).
 - Para os exemplos de código: Python ou Node com o SDK `openai`.
 
 ### Diferenças em relação ao instalador oficial
