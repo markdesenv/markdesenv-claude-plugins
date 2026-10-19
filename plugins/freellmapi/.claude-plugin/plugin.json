@@ -1,0 +1,11 @@
+{
+  "name": "freellmapi",
+  "version": "0.1.0",
+  "description": "Instala, verifica e usa o FreeLLMAPI (tashfeenahmed/freellmapi) a partir do Claude Code, com versão fixada e porta só em localhost.",
+  "author": {
+    "name": "markdesenv"
+  },
+  "homepage": "https://github.com/tashfeenahmed/freellmapi",
+  "license": "MIT",
+  "keywords": ["llm", "free-tier", "openai-compatible", "gateway", "freellmapi"]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "markdesenv-plugins",
+  "owner": {
+    "name": "markdesenv"
+  },
+  "metadata": {
+    "description": "Plugins do markdesenv para o Claude Code."
+  },
+  "plugins": [
+    {
+      "name": "freellmapi",
+      "source": "./plugins/freellmapi",
+      "description": "Instala, verifica e usa o FreeLLMAPI (gateway OpenAI/Anthropic-compatível que agrega planos gratuitos de vários provedores de LLM).",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": ["llm", "free-tier", "openai-compatible", "gateway", "freellmapi"]
+    }
+  ]
+}

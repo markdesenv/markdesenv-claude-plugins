@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validar JSON dos manifestos
+        run: |
+          for f in .claude-plugin/marketplace.json plugins/*/.claude-plugin/plugin.json; do
+            python3 -m json.tool "$f" > /dev/null && echo "ok: $f"
+          done
+
+      - name: Conferir frontmatter dos comandos e skills
+        run: |
+          for f in plugins/*/commands/*.md plugins/*/skills/*/SKILL.md; do
+            head -1 "$f" | grep -qx -- '---' || { echo "sem frontmatter: $f"; exit 1; }
+            grep -q '^description:' "$f" || { echo "sem description: $f"; exit 1; }
+            echo "ok: $f"
+          done
+
+      - name: ShellCheck
+        run: shellcheck plugins/*/scripts/*.sh
