@@ -1,4 +1,4 @@
-# Instala o FreeLLMAPI via Docker Compose no Windows, com imagem fixada e porta presa em localhost.
+﻿# Instala o FreeLLMAPI via Docker Compose no Windows, com imagem fixada e porta presa em localhost.
 # Não executa nenhum script remoto (substitui o "curl | bash" oficial).
 $ErrorActionPreference = 'Stop'
 

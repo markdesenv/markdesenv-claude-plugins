@@ -1,4 +1,4 @@
-# Instala o FreeLLMAPI a partir do código-fonte, rodando direto no Node (sem Docker, sem admin).
+﻿# Instala o FreeLLMAPI a partir do código-fonte, rodando direto no Node (sem Docker, sem admin).
 # Layout em $HOME\freellmapi:  app\ (código, versão fixada)  data\ (banco)  logs\  .env
 $ErrorActionPreference = 'Stop'
 
@@ -22,28 +22,37 @@ if (Test-Path (Join-Path $Root 'freellmapi.pid')) { & $stop | Out-Null }
 
 New-Item -ItemType Directory -Force -Path $Root, (Join-Path $Root 'data'), (Join-Path $Root 'logs') | Out-Null
 
+# Roda um comando externo e decide só pelo código de saída. No Windows PowerShell 5.1,
+# qualquer linha no stderr (avisos do Vite, progresso do git) vira erro fatal com
+# ErrorActionPreference=Stop; por isso o stderr é unido ao stdout dentro do cmd.
+function Invoke-Native {
+  param([string]$CommandLine, [string]$ErrorMessage)
+  $prev = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try {
+    cmd /c "$CommandLine 2>&1" | ForEach-Object { Write-Host $_ }
+    $code = $LASTEXITCODE
+  } finally { $ErrorActionPreference = $prev }
+  if ($code -ne 0) { throw "$ErrorMessage (código $code)" }
+}
+
 if (Test-Path (Join-Path $App '.git')) {
   Write-Host "Atualizando código para $Version ..."
-  git -C $App fetch --depth 1 origin "refs/tags/${Version}:refs/tags/${Version}"
-  if ($LASTEXITCODE -ne 0) { throw "Falha ao buscar a tag $Version." }
-  git -C $App checkout -q --force $Version
+  Invoke-Native "git -C `"$App`" fetch -q --depth 1 origin refs/tags/${Version}:refs/tags/${Version}" "Falha ao buscar a tag $Version."
+  Invoke-Native "git -C `"$App`" checkout -q --force $Version" "Falha no checkout de $Version."
 } else {
   Write-Host "Baixando FreeLLMAPI $Version ..."
-  git clone -q --depth 1 --branch $Version $Repo $App
+  Invoke-Native "git clone -q --depth 1 --branch $Version $Repo `"$App`"" 'Falha no git clone.'
 }
-if ($LASTEXITCODE -ne 0) { throw 'Falha no git.' }
 
 # npm.cmd evita o bloqueio de política de execução sobre npm.ps1.
-$npm = if (Get-Command npm.cmd -ErrorAction SilentlyContinue) { 'npm.cmd' } else { 'npm' }
 Push-Location $App
 try {
   Write-Host 'Instalando dependências (npm ci) ...'
   # --include=dev: o build precisa de TypeScript e @types, mesmo se o ambiente tiver NODE_ENV=production.
-  & $npm ci --include=dev --no-audit --no-fund --loglevel=error
-  if ($LASTEXITCODE -ne 0) { throw 'Falha no npm ci.' }
+  Invoke-Native 'npm.cmd ci --include=dev --no-audit --no-fund --loglevel=error' 'Falha no npm ci.'
   Write-Host 'Compilando (npm run build) ...'
-  & $npm run build --silent
-  if ($LASTEXITCODE -ne 0) { throw 'Falha no npm run build.' }
+  Invoke-Native 'npm.cmd run build --silent' 'Falha no npm run build.'
 } finally { Pop-Location }
 
 $envFile = Join-Path $Root '.env'

@@ -1,4 +1,4 @@
-# Inicia o FreeLLMAPI (modo Node) em segundo plano, sem janela, só em 127.0.0.1.
+﻿# Inicia o FreeLLMAPI (modo Node) em segundo plano, sem janela, só em 127.0.0.1.
 $ErrorActionPreference = 'Stop'
 
 $Root    = if ($env:FREELLMAPI_DIR) { $env:FREELLMAPI_DIR } else { Join-Path $HOME 'freellmapi' }

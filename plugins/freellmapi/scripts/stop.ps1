@@ -1,4 +1,4 @@
-# Para o FreeLLMAPI iniciado pelo start.ps1.
+﻿# Para o FreeLLMAPI iniciado pelo start.ps1.
 $Root    = if ($env:FREELLMAPI_DIR) { $env:FREELLMAPI_DIR } else { Join-Path $HOME 'freellmapi' }
 $PidFile = Join-Path $Root 'freellmapi.pid'
 
