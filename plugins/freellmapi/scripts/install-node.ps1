@@ -38,7 +38,8 @@ $npm = if (Get-Command npm.cmd -ErrorAction SilentlyContinue) { 'npm.cmd' } else
 Push-Location $App
 try {
   Write-Host 'Instalando dependências (npm ci) ...'
-  & $npm ci --no-audit --no-fund --loglevel=error
+  # --include=dev: o build precisa de TypeScript e @types, mesmo se o ambiente tiver NODE_ENV=production.
+  & $npm ci --include=dev --no-audit --no-fund --loglevel=error
   if ($LASTEXITCODE -ne 0) { throw 'Falha no npm ci.' }
   Write-Host 'Compilando (npm run build) ...'
   & $npm run build --silent

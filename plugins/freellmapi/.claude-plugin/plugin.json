@@ -1,6 +1,6 @@
 {
   "name": "freellmapi",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Instala, verifica e usa o FreeLLMAPI (tashfeenahmed/freellmapi) a partir do Claude Code, com versão fixada e porta só em localhost.",
   "author": {
     "name": "markdesenv"
