@@ -11,7 +11,7 @@
       "name": "freellmapi",
       "source": "./plugins/freellmapi",
       "description": "Instala, verifica e usa o FreeLLMAPI (gateway OpenAI/Anthropic-compatível que agrega planos gratuitos de vários provedores de LLM).",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "license": "MIT",
       "keywords": ["llm", "free-tier", "openai-compatible", "gateway", "freellmapi"]
     }

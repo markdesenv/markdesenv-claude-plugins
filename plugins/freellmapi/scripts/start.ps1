@@ -17,9 +17,13 @@ if (Test-Up) { Write-Host "Já está rodando em http://127.0.0.1:$Port"; exit 0 
 $env:NODE_ENV = 'production'
 $env:FREEAPI_ENV_PATH = $EnvFile
 $logs = Join-Path $Root 'logs'
-$p = Start-Process -FilePath (Get-Command node).Source -ArgumentList 'server\dist\index.js' `
-  -WorkingDirectory $App -WindowStyle Hidden -PassThru `
-  -RedirectStandardOutput (Join-Path $logs 'server.log') -RedirectStandardError (Join-Path $logs 'server.err.log')
+# Sem -Redirect*, o Start-Process usa ShellExecute e o processo não herda os handles do
+# terminal que chamou (senão quem chamou fica preso esperando o Node terminar).
+# O redirecionamento para os logs é feito pelo próprio cmd.
+$out = Join-Path $logs 'server.log'
+$err = Join-Path $logs 'server.err.log'
+$p = Start-Process -FilePath $env:ComSpec -WindowStyle Hidden -PassThru -WorkingDirectory $App `
+  -ArgumentList "/d /c node server\dist\index.js >> `"$out`" 2>> `"$err`""
 $p.Id | Set-Content $PidFile
 
 for ($i = 0; $i -lt 30; $i++) {
